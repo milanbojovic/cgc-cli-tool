@@ -4,9 +4,15 @@ import org.apache.commons.cli.*;
 
 public class Main {
 
+    public static String CGC_URL = "https://cgc-api.sbgenomics.com/";
+
+
     public static void main(String[] args) {
 
-        Options options = new Options();
+        CGCClient cgcClient = new CGCClient(CGC_URL);
+        System.out.println(cgcClient.listProjects("d7c8e207e2b04c268a5dee109ad2548f"));
+
+/*        Options options = new Options();
 
         Option token = Option.builder("t")
                 .longOpt("token")
@@ -119,6 +125,8 @@ public class Main {
         if (cmd.hasOption("dest")) {
             System.out.println("Destination file directive");
 
-        }
+        }*/
+
+
     }
 }
