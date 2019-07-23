@@ -68,7 +68,7 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return "Project{" +
+		return "\nProject{" +
 				"href='" + href + '\'' +
 				", id='" + id + '\'' +
 				", name='" + name + '\'' +

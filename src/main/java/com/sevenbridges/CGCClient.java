@@ -4,7 +4,9 @@ import com.google.gson.*;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.sevenbridges.http.HttpClient;
+import com.sevenbridges.http.json.File;
 import com.sevenbridges.http.json.Project;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,35 @@ public class CGCClient {
 
 			for(JsonElement item : items) {
 				result.add(gson.fromJson(item, Project.class));
+			}
+
+		} catch (Exception e) {
+			LOGGER.severe(e.toString());
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+
+
+
+	public List<File> listFiles(String accessToken, String projectId) {
+		List<File> result = new ArrayList<File>();
+
+		try {
+			LOGGER.fine("Listing all files with token");
+
+			URIBuilder builder = new URIBuilder(webAddress + HTTP_ENDPOINT_FILES);
+			builder.setParameter("project", projectId);
+			String requestUrl = builder.build().toString();
+
+			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+
+			checkHttpResponseCode(httpResponse, 200, "Error while listing files for project: " + projectId);
+			JsonArray items = getItems(httpResponse);
+
+			for(JsonElement item : items) {
+				result.add(gson.fromJson(item, File.class));
 			}
 
 		} catch (Exception e) {
