@@ -54,8 +54,6 @@ public class CGCClient {
 	}
 
 
-
-
 	public List<File> listFiles(String accessToken, String projectId) {
 		List<File> result = new ArrayList<File>();
 
@@ -75,6 +73,25 @@ public class CGCClient {
 				result.add(gson.fromJson(item, File.class));
 			}
 
+		} catch (Exception e) {
+			LOGGER.severe(e.toString());
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public File listFileDetails(String accessToken, String fileId) {
+		File result = null;
+
+		try {
+			LOGGER.fine("Listing defails for file: " + fileId);
+
+			String requestUrl = webAddress + HTTP_ENDPOINT_FILES + "/" + fileId;
+			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+
+			checkHttpResponseCode(httpResponse, 200, "Error while listing file details: file[" + fileId + "]");
+			JsonObject item = parser.parse(httpResponse.getBody()).getAsJsonObject();
+			result = gson.fromJson(item, File.class);
 		} catch (Exception e) {
 			LOGGER.severe(e.toString());
 			e.printStackTrace();
