@@ -16,6 +16,8 @@ public class MetaData {
     private String experimentalStrategy;
     private String gender;
 
+    public MetaData() {}
+
     public MetaData(String library_id, String reference_genome, String sample_type, String platform, String investigation, String caseId, String sampleId, String experimentalStrategy, String gender) {
         this.library_id = library_id;
         this.reference_genome = reference_genome;

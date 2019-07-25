@@ -5,13 +5,12 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.sevenbridges.http.HttpClient;
 import com.sevenbridges.http.json.File;
+import com.sevenbridges.http.json.MetaData;
 import com.sevenbridges.http.json.Project;
+import com.sevenbridges.http.json.UpdateFileRequest;
 import org.apache.http.client.utils.URIBuilder;
 
-import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,7 +40,7 @@ public class CGCClient {
 		LOGGER.fine("Listing all projects with token");
 		try {
 			String requestUrl = webAddress + HTTP_ENDPOINT_PROJECTS;
-			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+			HttpResponse<String> httpResponse = httpClient.httpGet(accessToken, requestUrl);
 
 			checkHttpResponseCode(httpResponse, 200, "Error while listing projects");
 			JsonArray items = getItems(httpResponse);
@@ -65,7 +64,7 @@ public class CGCClient {
 			builder.setParameter("project", projectId);
 			String requestUrl = builder.build().toString();
 
-			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+			HttpResponse<String> httpResponse = httpClient.httpGet(accessToken, requestUrl);
 			checkHttpResponseCode(httpResponse, 200, "Error while listing files for project " + projectId);
 			JsonArray items = getItems(httpResponse);
 
@@ -84,9 +83,26 @@ public class CGCClient {
 		LOGGER.fine("Listing defails for file: " + fileId);
 		try {
 			String requestUrl = webAddress + HTTP_ENDPOINT_FILES + "/" + fileId;
-			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+			HttpResponse<String> httpResponse = httpClient.httpGet(accessToken, requestUrl);
 
 			checkHttpResponseCode(httpResponse, 200, "Error while listing file details for file [" + fileId + "]");
+			JsonObject item = parser.parse(httpResponse.getBody()).getAsJsonObject();
+			result = gson.fromJson(item, File.class);
+		} catch (Exception e) {
+			LOGGER.severe(e.toString());
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public File updateFileDetails(String accessToken, String fileId, UpdateFileRequest updateFileRequest) {
+		File result = null;
+		LOGGER.fine("Updating defails for file: " + fileId);
+		try {
+			String requestUrl = webAddress + HTTP_ENDPOINT_FILES + "/" + fileId;
+			HttpResponse<String> httpResponse = httpClient.httpPatch(accessToken, requestUrl, gson.toJson(updateFileRequest));
+
+			checkHttpResponseCode(httpResponse, 200, "Error while updating file details for file [" + fileId + "] with body: " + gson.toJson(updateFileRequest));
 			JsonObject item = parser.parse(httpResponse.getBody()).getAsJsonObject();
 			result = gson.fromJson(item, File.class);
 		} catch (Exception e) {
@@ -100,7 +116,7 @@ public class CGCClient {
 		LOGGER.fine("Getting file download url : " + fileId);
 		try {
 			String requestUrl = webAddress + HTTP_ENDPOINT_DOWNLOAD_FILE.replace("{file.id}", fileId);
-			HttpResponse<String> httpResponse = httpClient.httpGetWithToken(accessToken, requestUrl);
+			HttpResponse<String> httpResponse = httpClient.httpGet(accessToken, requestUrl);
 
 			checkHttpResponseCode(httpResponse, 200, "Error while fetching download URL for file [" + fileId + "]");
 			String url = parser.parse(httpResponse.getBody()).getAsJsonObject().get("url").toString();
@@ -112,7 +128,7 @@ public class CGCClient {
 			//URL fileUrl = new URL(url1 +"?" + URLEncoder.encode(url2, "UTF-8"));
 
 			URL fileUrl = new URL("https://sb-datasets-us-east-1.s3.amazonaws.com/cgl-sgdd-reorg/SGDP/REMAP_hs37d5/LP6005441-DNA_A01.annotated.nh.vcf.gz.tbi?x-username=milanbojovic&x-requestId=9fd0fd66-111c-4279-bd4e-791099d883ad&x-project=milanbojovic%2Fmilans-genome-diversity-project-mgdp&response-content-disposition=attachment%3Bfilename%3DLP6005441-DNA_A01.annotated.nh.vcf.gz.tbi&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190723T184207Z&X-Amz-SignedHeaders=host&X-Amz-Expires=172800&X-Amz-Credential=AKIAJQD4ZMI5SNVG2A2A%2F20190723%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=add7fbe2a7ad85775ac83fbf1a69539cef23c8f7919f89c443eed1b871d90941");
-			fileUrl = new URL(StandardCharsets.UTF_8.encode(url).toString());
+			//fileUrl = new URL(StandardCharsets.UTF_8.encode(url).toString());
 
 			org.apache.commons.io.FileUtils.copyURLToFile(fileUrl, dstFile);
 			System.out.println("File download completed.");
@@ -132,7 +148,7 @@ public class CGCClient {
 	private void checkHttpResponseCode(HttpResponse<String> httpResponse, int expectedCode, String errorMsg)
 			throws UnirestException {
 		if (httpResponse.getStatus() != expectedCode) {
-			throw new UnirestException(errorMsg);
+			throw new UnirestException(errorMsg + httpResponse.getBody());
 		}
 	}
 }
