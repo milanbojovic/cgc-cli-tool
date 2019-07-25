@@ -12,7 +12,9 @@ public class Main {
         CGCClient cgcClient = new CGCClient(CGC_URL);
         //System.out.println(cgcClient.listProjects("d7c8e207e2b04c268a5dee109ad2548f"));
         //System.out.println(cgcClient.listFiles("d7c8e207e2b04c268a5dee109ad2548f", "milanbojovic/copy-of-personal-genome-project-uk-pgp-uk"));
-        System.out.println(cgcClient.listFileDetails("d7c8e207e2b04c268a5dee109ad2548f", "5d36d1a7e4b07db62607e3ac"));
+        //System.out.println(cgcClient.listFileDetails("d7c8e207e2b04c268a5dee109ad2548f", "5d36d1a7e4b07db62607e3ac"));
+        cgcClient.downloadFile("d7c8e207e2b04c268a5dee109ad2548f", "5d36d1a7e4b07db62607e544", "/tmp/file1.txt");
+
 
 /*        Options options = new Options();
 
