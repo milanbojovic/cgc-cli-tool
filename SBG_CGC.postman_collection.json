@@ -1,0 +1,137 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SBG_CGC",
+		"_postman_id": "93c34be8-65ac-d720-7962-df0f03505ca1",
+		"description": "SevenBridgesGenomics",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List projects",
+			"request": {
+				"url": "https://cgc-api.sbgenomics.com/v2/projects",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-SBG-Auth-Token",
+						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List files for project",
+			"request": {
+				"url": {
+					"raw": "https://cgc-api.sbgenomics.com/v2/files?project=milanbojovic/milans-genome-diversity-project-mgdp",
+					"protocol": "https",
+					"host": [
+						"cgc-api",
+						"sbgenomics",
+						"com"
+					],
+					"path": [
+						"v2",
+						"files"
+					],
+					"query": [
+						{
+							"key": "project",
+							"value": "milanbojovic/milans-genome-diversity-project-mgdp",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-SBG-Auth-Token",
+						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "List file details",
+			"request": {
+				"url": "https://cgc-api.sbgenomics.com/v2/files/5d36d1a7e4b07db62607e3ac",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-SBG-Auth-Token",
+						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update file details",
+			"request": {
+				"url": "https://cgc-api.sbgenomics.com/v2/files/5d36d1a7e4b07db62607e3ac",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-SBG-Auth-Token",
+						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"description": ""
+					},
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"1_1000Genomes_phase1.snps.high_confidence.b37.vcf\",\n  \"metadata\": {\n    \"disease_type\": \"Acute Myeloid Leukemia\"\n    },\n  \"tags\": [\"test 1b\", \"big sample\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get download URL for file",
+			"request": {
+				"url": "https://cgc-api.sbgenomics.com/v2/files/5d36d1a7e4b07db62607e3ac/download_info",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-SBG-Auth-Token",
+						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"1_1000Genomes_phase1.snps.high_confidence.b37.vcf\",\n  \"metadata\": {\n    disease_type: \"Acute Myeloid Leukemia\"\n    },\n  \"tags\": [\"test 1b\", \"big sample\"]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
