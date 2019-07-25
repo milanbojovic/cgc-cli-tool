@@ -15,7 +15,7 @@
 				"header": [
 					{
 						"key": "X-SBG-Auth-Token",
-						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"value": "{{token}}",
 						"description": ""
 					}
 				],
@@ -56,7 +56,7 @@
 				"header": [
 					{
 						"key": "X-SBG-Auth-Token",
-						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"value": "{{token}}",
 						"description": ""
 					}
 				],
@@ -76,7 +76,7 @@
 				"header": [
 					{
 						"key": "X-SBG-Auth-Token",
-						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"value": "{{token}}",
 						"description": ""
 					}
 				],
@@ -96,7 +96,7 @@
 				"header": [
 					{
 						"key": "X-SBG-Auth-Token",
-						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"value": "{{token}}",
 						"description": ""
 					},
 					{
@@ -107,7 +107,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"1_1000Genomes_phase1.snps.high_confidence.b37.vcf\",\n  \"metadata\": {\n    \"disease_type\": \"Acute Myeloid Leukemia\"\n    },\n  \"tags\": [\"test 1b\", \"big sample\"]\n}"
+					"raw": "{\n  \"tags\": [\"test 1b\", \"big sample\"]\n}"
 				},
 				"description": ""
 			},
@@ -116,12 +116,12 @@
 		{
 			"name": "Get download URL for file",
 			"request": {
-				"url": "https://cgc-api.sbgenomics.com/v2/files/5d36d1a7e4b07db62607e3ac/download_info",
+				"url": "https://cgc-api.sbgenomics.com/v2/files/5d36d1a7e4b07db62607e544/download_info",
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-SBG-Auth-Token",
-						"value": "d7c8e207e2b04c268a5dee109ad2548f",
+						"value": "{{token}}",
 						"description": ""
 					}
 				],
