@@ -120,17 +120,10 @@ public class CGCClient {
 
 			checkHttpResponseCode(httpResponse, 200, "Error while fetching download URL for file [" + fileId + "]");
 			String url = parser.parse(httpResponse.getBody()).getAsJsonObject().get("url").toString();
+			URL fileUrl = new URL(url.replaceAll("^\"|\"$", ""));
 			java.io.File dstFile = new java.io.File(destination);
-
-			//URL fileUrl = new URL("https:\\/\\/sb-datasets-us-east-1.s3.amazonaws.com\\/cgl-sgdd-reorg\\/SGDP\\/REMAP_hs37d5\\/LP6005441-DNA_A01.annotated.nh.vcf.gz?x-username=milanbojovic&x-requestId=22f5a357-a429-4495-ba18-58c04d06b38e&x-project=milanbojovic%2Fmilans-genome-diversity-project-mgdp&response-content-disposition=attachment%3Bfilename%3DLP6005441-DNA_A01.annotated.nh.vcf.gz&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190723T160437Z&X-Amz-SignedHeaders=host&X-Amz-Expires=172800&X-Amz-Credential=AKIAJQD4ZMI5SNVG2A2A%2F20190723%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=2c7c47e16a7cd0ba662e0a193667dfcb53875583e1b38b88bc0d3b9f24c4ae59");
-			//String url1 = url.split("\\?")[0];
-			//String url2 = url.split("\\?")[1];
-			//URL fileUrl = new URL(url1 +"?" + URLEncoder.encode(url2, "UTF-8"));
-
-			URL fileUrl = new URL("https://sb-datasets-us-east-1.s3.amazonaws.com/cgl-sgdd-reorg/SGDP/REMAP_hs37d5/LP6005441-DNA_A01.annotated.nh.vcf.gz.tbi?x-username=milanbojovic&x-requestId=9fd0fd66-111c-4279-bd4e-791099d883ad&x-project=milanbojovic%2Fmilans-genome-diversity-project-mgdp&response-content-disposition=attachment%3Bfilename%3DLP6005441-DNA_A01.annotated.nh.vcf.gz.tbi&response-content-type=application%2Foctet-stream&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190723T184207Z&X-Amz-SignedHeaders=host&X-Amz-Expires=172800&X-Amz-Credential=AKIAJQD4ZMI5SNVG2A2A%2F20190723%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=add7fbe2a7ad85775ac83fbf1a69539cef23c8f7919f89c443eed1b871d90941");
-			//fileUrl = new URL(StandardCharsets.UTF_8.encode(url).toString());
-
 			org.apache.commons.io.FileUtils.copyURLToFile(fileUrl, dstFile);
+
 			System.out.println("File download completed.");
 
 		} catch (Exception e) {
